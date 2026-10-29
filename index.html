@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JMH Virtual Tour – The South African War 1899–1902</title>
+<style>
+:root{--ink:#2b2118;--paper:#fbf6ea;--card:#fffdf7;--accent:#8c2f1b;--accent2:#1f5f7a;--line:#d9ccb0;--muted:#6d5f4d}
+*{box-sizing:border-box}
+body{margin:0;font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:var(--paper);line-height:1.55}
+header{background:linear-gradient(120deg,#3b2415,#8c2f1b);color:#fff;padding:18px 20px}
+header h1{margin:0;font-size:1.5rem;letter-spacing:.5px}
+header p{margin:4px 0 0;opacity:.85;font-size:.95rem}
+nav.chips{display:flex;gap:8px;flex-wrap:wrap;padding:10px 20px;background:#efe4cc;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+nav.chips button{font:inherit;font-size:.9rem;border:1px solid var(--accent);background:#fff;color:var(--accent);padding:5px 12px;border-radius:20px;cursor:pointer}
+nav.chips button.on{background:var(--accent);color:#fff}
+main{max-width:1050px;margin:0 auto;padding:18px}
+.maprow{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:18px}
+@media(max-width:850px){.maprow{grid-template-columns:1fr}}
+.mapbox{background:#cfe6f2;border:2px solid var(--line);border-radius:12px;overflow:hidden}
+.mapbox svg{display:block;width:100%;height:auto}
+.side{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.side h2{margin-top:0}
+.side ol{padding-left:20px}
+.side li{margin:6px 0;cursor:pointer}
+.side li:hover{color:var(--accent)}
+.btn{display:inline-block;font:inherit;background:var(--accent);color:#fff;border:0;border-radius:8px;padding:9px 18px;cursor:pointer;text-decoration:none;margin:4px 6px 4px 0}
+.btn.alt{background:var(--accent2)}
+.btn.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+.prov{stroke:#5a4a3a;stroke-width:1.5;transition:.2s}
+.prov:hover{filter:brightness(1.07)}
+.pin{cursor:pointer}
+.pin circle{fill:var(--accent);stroke:#fff;stroke-width:3}
+.pin text.n{fill:#fff;font:bold 15px sans-serif;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.pin .pulse{fill:none;stroke:var(--accent);stroke-width:2;animation:pulse 2s ease-out infinite;transform-origin:center;transform-box:fill-box}
+.pin text.l{font:bold 15px Georgia;fill:#2b2118;paint-order:stroke;stroke:#fff;stroke-width:4px}
+@keyframes pulse{from{transform:scale(1);opacity:.9}to{transform:scale(2.6);opacity:0}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin-top:14px}
+.panel h2{margin:.2em 0;color:var(--accent)}
+.panel h3{color:var(--accent2);margin-bottom:.3em}
+.meta{color:var(--muted);font-size:.9rem;margin:0 0 8px}
+svg.scene{width:100%;height:auto;border-radius:10px;border:1px solid var(--line);display:block;margin:8px 0 14px}
+.fig{margin:10px 0;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;display:inline-block;max-width:100%;vertical-align:top}
+.fig img{max-width:100%;max-height:340px;display:block;margin:auto}
+.fig figcaption{font-size:.85rem;color:var(--muted);margin-top:6px}
+.fig.broken::before{content:"Image could not load here – open the source link below.";display:block;font-size:.85rem;color:var(--accent);padding:10px}
+.gallery{display:flex;gap:12px;flex-wrap:wrap}
+.gallery .fig{flex:1 1 280px}
+.act{background:#fff3da;border-left:5px solid #d99a1b;padding:10px 18px;border-radius:6px;margin:16px 0}
+.act h3{margin-top:4px;color:#8a5a00}
+.act li{margin:6px 0}
+.vid{position:relative;padding-top:56.25%;margin:10px 0}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:8px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:10px 0}
+.cards a{display:block;background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px;text-decoration:none;color:var(--ink)}
+.cards a b{color:var(--accent2);display:block}
+.cards a small{color:var(--muted)}
+.note{background:#e8f1f5;border-left:5px solid var(--accent2);padding:8px 14px;border-radius:6px;font-size:.93rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem;margin:10px 0}
+th,td{border:1px solid var(--line);padding:6px 8px;vertical-align:top;text-align:left}
+th{background:#efe4cc}
+.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap}
+.refs li{margin:8px 0}
+a{color:var(--accent2)}
+/* ---------- animation ---------- */
+.leg{transform-origin:0 -14px}
+.l1{animation:step .6s ease-in-out infinite alternate}
+.l2{animation:step .6s ease-in-out infinite alternate-reverse}
+.arm{transform-origin:0 -27px;animation:step .6s ease-in-out infinite alternate-reverse}
+.swing{transform-origin:0 -27px;animation:swing .9s ease-in-out infinite alternate}
+.bob{animation:bob .3s ease-in-out infinite alternate}
+.hleg{animation:gallop .35s ease-in-out infinite alternate}
+.h2,.h3{animation-direction:alternate-reverse}
+.mv{animation:cross 14s linear infinite}
+.mvs{animation:cross 26s linear infinite}
+.climb{animation:climb 16s linear infinite}
+.drift{animation:drift 18s ease-in-out infinite alternate}
+.puff{transform-box:fill-box;transform-origin:center;animation:puff 3s ease-out infinite}
+@keyframes step{from{transform:rotate(-28deg)}to{transform:rotate(28deg)}}
+@keyframes swing{from{transform:rotate(-75deg)}to{transform:rotate(35deg)}}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-2px)}}
+@keyframes gallop{from{transform:rotate(-30deg)}to{transform:rotate(30deg)}}
+@keyframes cross{from{transform:translateX(-120px)}to{transform:translateX(780px)}}
+@keyframes climb{0%{transform:translate(0,0);opacity:0}8%{opacity:1}90%{opacity:1}100%{transform:translate(400px,-100px);opacity:0}}
+@keyframes drift{from{transform:translateX(-40px)}to{transform:translateX(60px)}}
+@keyframes puff{0%{transform:scale(.2);opacity:.9}100%{transform:scale(2.4);opacity:0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <h1>JMH Virtual Tour: The South African War, 1899–1902</h1>
+  <p>Five areas · Witwatersrand → Bloemfontein → Paardeberg → Spion Kop → Pretoria</p>
+</header>
+<nav class="chips" id="chips"></nav>
+<main id="app"></main>
+
+<script>
+/* ---------- helpers ---------- */
+const L=(u,t)=>`<a href="${u}" target="_blank" rel="noopener">${t||u}</a>`;
+const fig=(src,cap,page)=>`<figure class="fig"><img src="${src}" alt="${cap.replace(/"/g,'')}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('broken');this.remove()"><figcaption>${cap}${page?' · '+L(page,'View source'):''}</figcaption></figure>`;
+const yt=(id,start,title)=>`<div class="vid"><iframe src="https://www.youtube-nocookie.com/embed/${id}${start?'?start='+start:''}" title="${title}" allowfullscreen loading="lazy"></iframe></div><p class="meta">Video: ${L('https://youtu.be/'+id+(start?'?t='+start:''),'Watch on YouTube')}</p>`;
+const maps=(lat,lon,name)=>`<a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${lat},${lon}">📍 ${name} on Google Maps</a> <a class="btn ghost" target="_blank" rel="noopener" href="https://earth.google.com/web/search/${lat},${lon}">🌍 Google Earth</a>`;
+const card=(u,t,s)=>`<a href="${u}" target="_blank" rel="noopener"><b>${t}</b><small>${s||''}</small></a>`;
+
+/* ---------- animated people ---------- */
+function person(x,y,o={}){
+  const c=o.c||'#556',hc=o.h||'#6b5b32',s=o.s||1,sk='#e0b48a',st=o.still;
+  let arm=`<line class="${st?'':'arm'}" x1="0" y1="-27" x2="7" y2="-16" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`;
+  if(o.pick) arm=`<g class="swing"><line x1="0" y1="-27" x2="8" y2="-16" stroke="${c}" stroke-width="4" stroke-linecap="round"/><line x1="8" y1="-16" x2="15" y2="-30" stroke="#5a3b1e" stroke-width="2.5"/><line x1="10" y1="-33" x2="21" y2="-27" stroke="#444" stroke-width="3.5"/></g>`;
+  const gun=o.gun?`<line x1="-4" y1="-20" x2="12" y2="-34" stroke="#222" stroke-width="2.2"/>`:'';
+  return `<g transform="translate(${x},${y}) scale(${s})"><g class="${st?'':'bob'}">
+  <line class="leg ${st?'':'l1'}" x1="0" y1="-14" x2="0" y2="0" stroke="#333" stroke-width="4.5" stroke-linecap="round"/>
+  <line class="leg ${st?'':'l2'}" x1="0" y1="-14" x2="0" y2="0" stroke="#222" stroke-width="4.5" stroke-linecap="round"/>
+  <line x1="0" y1="-29" x2="0" y2="-14" stroke="${c}" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="0" cy="-35" r="5" fill="${sk}"/>
+  <path d="M-8 -36 h16 l-3 -3 q-5 -5 -10 0z" fill="${hc}"/>${gun}${arm}</g></g>`;
+}
+function horse(x,y,s,col,rider){
+  const L=(a,b,n)=>`<line class="hleg ${n}" style="transform-origin:${a}px -24px" x1="${a}" y1="-24" x2="${a}" y2="0" stroke="#3b2a1a" stroke-width="4" stroke-linecap="round"/>`;
+  return `<g transform="translate(${x},${y}) scale(${s})"><g class="bob">${L(-18,0,'h1')}${L(-12,0,'h2')}${L(14,0,'h3')}${L(20,0,'h4')}
+  <ellipse cx="0" cy="-30" rx="26" ry="10" fill="${col||'#7a4b24'}"/><polygon points="20,-34 34,-54 43,-49 30,-28" fill="${col||'#7a4b24'}"/>
+  <ellipse cx="43" cy="-50" rx="8" ry="5" transform="rotate(25 43 -50)" fill="${col||'#7a4b24'}"/><line x1="-26" y1="-32" x2="-38" y2="-18" stroke="#2b1a0e" stroke-width="3"/>
+  ${rider===false?'':person(0,-34,{still:true,c:'#7a6a3a',s:.85,gun:true})}</g></g>`;
+}
+const mv=(inner,dur,delay,cls)=>`<g class="${cls||'mv'}" style="animation-duration:${dur}s;animation-delay:${delay}s">${inner}</g>`;
+const wheel=(cx,cy,r)=>`<g transform="translate(${cx},${cy})"><circle r="${r}" fill="none" stroke="#3b2a1a" stroke-width="3"/><g><line x1="${-r}" x2="${r}" stroke="#3b2a1a" stroke-width="2"/><line y1="${-r}" y2="${r}" stroke="#3b2a1a" stroke-width="2"/><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="2.5s" repeatCount="indefinite"/></g></g>`;
+const puffs=(pts)=>pts.map(([x,y,d])=>`<circle class="puff" cx="${x}" cy="${y}" r="14" fill="#cfcfcf" style="animation-delay:${d}s"/>`).join('');
+const flag=(x,y,c1,c2)=>`<g transform="translate(${x},${y})"><line x1="0" y1="0" x2="0" y2="70" stroke="#444" stroke-width="3"/><path fill="${c1}"><animate attributeName="d" dur="1.2s" repeatCount="indefinite" values="M2 2 q15 -8 30 0 t30 0 v22 q-15 8 -30 0 t-30 0z;M2 2 q15 8 30 0 t30 0 v22 q-15 -8 -30 0 t-30 0z;M2 2 q15 -8 30 0 t30 0 v22 q-15 8 -30 0 t-30 0z"/></path><rect x="0" y="0" width="0" height="0" fill="${c2}"/></g>`;
+const scene=(sky1,sky2,ground,inner,label)=>`<svg class="scene" viewBox="0 0 700 230" role="img" aria-label="Animated illustration: ${label}"><defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky1}"/><stop offset="1" stop-color="${sky2}"/></linearGradient></defs><rect width="700" height="230" fill="url(#sk)"/><rect y="190" width="700" height="40" fill="${ground}"/>${inner}<text x="10" y="222" font-size="12" fill="#fff" font-family="sans-serif" opacity=".9">${label} (illustration)</text></svg>`;
+
+const scenes={
+gold:()=>scene('#f7d9a2','#fbeed2','#8b6a3d',
+ `<polygon points="430,190 520,120 620,190" fill="#b99b63"/><polygon points="560,190 640,140 700,190" fill="#a88a55"/>
+  <g stroke="#3b2a1a" stroke-width="4"><line x1="470" y1="190" x2="500" y2="90"/><line x1="530" y1="190" x2="500" y2="90"/><line x1="480" y1="150" x2="520" y2="150"/></g>${wheel(500,88,13)}
+  ${person(120,190,{pick:true,c:'#445',h:'#744',s:1.2,still:true})}${person(190,190,{pick:true,c:'#5a4a30',h:'#333',s:1.2,still:true})}${person(260,190,{c:'#7a2f2f',h:'#555',s:1.2})}
+  ${mv(person(0,190,{c:'#3a5a7a',h:'#333',s:1.1}),15,-3)}${mv(person(0,190,{c:'#6a4a2a',h:'#222',s:1.1}),15,-9)}${mv(`<g transform="translate(0,190)"><rect x="-30" y="-30" width="60" height="22" fill="#9a6b3a"/><path d="M-30 -30 q30 -22 60 0z" fill="#eee"/>${wheel(-18,-6,8)}${wheel(18,-6,8)}</g>`,28,-8,'mvs')}`,
+ 'Prospectors and miners on the Witwatersrand, 1886 onward'),
+raid:()=>scene('#bcd9ea','#f1ead0','#9a8f55',
+ `<g fill="#4c3b22"><rect x="70" y="140" width="6" height="50"/><rect x="560" y="130" width="6" height="60"/></g><ellipse cx="73" cy="135" rx="45" ry="14" fill="#5d7a35"/><ellipse cx="563" cy="125" rx="50" ry="15" fill="#5d7a35"/>
+  ${mv(horse(0,190,1.1),9,-1)}${mv(horse(0,190,1.1,'#3b2a1a'),9,-2.4)}${mv(horse(0,190,1.1,'#a07a4a'),9,-3.7)}${mv(horse(0,190,1.1,'#555'),9,-5.2)}
+  ${puffs([[150,185,0],[300,185,1],[450,185,2],[600,185,.5]])}
+  <text x="410" y="40" font-size="14" fill="#2b2118" font-family="sans-serif">Bechuanaland → Transvaal, 29 Dec 1895 → Doornkop, 2 Jan 1896</text>`,
+ 'Jameson’s mounted column crossing into the Transvaal'),
+pres:()=>scene('#cfe3f4','#f3f0e2','#a7936a',
+ `<g transform="translate(330,0)"><rect x="0" y="105" width="230" height="85" fill="#e6d6b6" stroke="#8a7650"/><polygon points="-10,105 115,60 240,105" fill="#a65a3a"/><rect x="85" y="130" width="60" height="60" fill="#7a5a3a"/>${[15,45,155,185].map(x=>`<rect x="${x}" y="125" width="18" height="30" fill="#fff" stroke="#8a7650"/>`).join('')}</g>
+  <g transform="translate(445,10)"><line x1="0" y1="0" x2="0" y2="60" stroke="#444" stroke-width="3"/><rect x="2" y="0" width="38" height="24" fill="#1f3a8a"><animate attributeName="width" values="38;32;38" dur="1.2s" repeatCount="indefinite"/></rect><line x1="2" y1="12" x2="40" y2="12" stroke="#fff" stroke-width="5"/><line x1="20" y1="0" x2="20" y2="24" stroke="#fff" stroke-width="5"/><line x1="2" y1="12" x2="40" y2="12" stroke="#c22" stroke-width="2"/><line x1="20" y1="0" x2="20" y2="24" stroke="#c22" stroke-width="2"/></g>
+  ${[0,1,2,3,4,5].map(i=>mv(person(0,190,{gun:true,c:'#8a7a4a',h:'#6b5b32',s:1.15}),13,-i*1.7)).join('')}
+  ${person(270,190,{still:true,c:'#a33',h:'#222',s:1.1})}${person(300,190,{still:true,c:'#3a6a4a',h:'#ccc',s:1})}
+  <text x="345" y="94" font-size="12" fill="#2b2118" font-family="sans-serif">Old Presidency, 13 March 1900</text>`,
+ 'British troops entering Bloemfontein'),
+paard:()=>scene('#c8d6e0','#e6e1cf','#8f8450',
+ `<path d="M0 175 q60 -14 120 0 t120 0 t120 0 t120 0 t120 0 t120 0 v22 h-720z" fill="#4e8fb3"><animateTransform attributeName="transform" type="translate" values="0 0;-60 0;0 0" dur="5s" repeatCount="indefinite"/></path>
+  <g>${[430,470,510,550,590].map(x=>`<g transform="translate(${x},186)"><rect x="-22" y="-26" width="44" height="18" fill="#9a6b3a"/><path d="M-22 -26 q22 -20 44 0z" fill="#ddd"/><circle cx="-12" cy="-6" r="6" fill="none" stroke="#3b2a1a" stroke-width="2.5"/><circle cx="12" cy="-6" r="6" fill="none" stroke="#3b2a1a" stroke-width="2.5"/></g>`).join('')}</g>
+  ${puffs([[300,150,0],[360,130,1],[330,160,2],[240,140,.6]])}
+  ${[0,1,2,3,4].map(i=>mv(person(0,192,{gun:true,c:'#8a7a4a',h:'#6b5b32',s:1.1}),16,-i*2.6)).join('')}
+  ${person(470,190,{still:true,gun:true,c:'#5a4630',h:'#2b2118',s:1.2})}${person(540,190,{still:true,gun:true,c:'#6a5a3a',h:'#2b2118',s:1.2})}
+  <text x="410" y="40" font-size="13" fill="#2b2118" font-family="sans-serif">Cronjé’s laager beside the Modder River, 18–27 Feb 1900</text>`,
+ 'The siege at Paardeberg'),
+spion:()=>scene('#aab4bb','#d9dcdc','#5d5a46',
+ `<polygon points="0,190 120,190 480,85 560,80 700,190" fill="#6d6a55"/><polygon points="480,85 560,80 600,95 500,95" fill="#7c7a62"/>
+  <g opacity=".75" fill="#f1f1f1"><g class="drift"><ellipse cx="200" cy="150" rx="120" ry="18"/><ellipse cx="500" cy="120" rx="130" ry="16"/></g><g class="drift" style="animation-delay:-6s"><ellipse cx="350" cy="170" rx="140" ry="14"/></g></g>
+  ${[0,1,2,3].map(i=>`<g class="climb" style="animation-delay:${-i*3.8}s"><g transform="translate(110,190)">${person(0,0,{gun:true,c:'#8a7a4a',h:'#6b5b32',s:1.1})}</g></g>`).join('')}
+  ${puffs([[570,70,0],[520,90,1.4]])}
+  <text x="12" y="30" font-size="13" fill="#fff" font-family="sans-serif">Night advance, mist, 23–24 Jan 1900 – the summit is reached, but is it defensible?</text>`,
+ 'British troops climbing Spion Kop'),
+pret:()=>scene('#bfdff3','#f6efd8','#a7936a',
+ `<g transform="translate(200,0)"><rect x="0" y="110" width="300" height="80" fill="#eadfc4" stroke="#8a7650"/><rect x="110" y="70" width="80" height="40" fill="#eadfc4" stroke="#8a7650"/><polygon points="105,70 150,35 195,70" fill="#8b4a2a"/><circle cx="150" cy="86" r="9" fill="#fff" stroke="#555"/>${[20,60,200,240].map(x=>`<rect x="${x}" y="130" width="22" height="34" fill="#a98f60"/>`).join('')}</g>
+  <g transform="translate(120,40)"><line x1="0" y1="0" x2="0" y2="150" stroke="#444" stroke-width="3"/><rect x="2" y="0" width="44" height="28" fill="#1f3a8a"><animate attributeName="width" values="44;36;44" dur="1.2s" repeatCount="indefinite"/></rect><line x1="2" y1="14" x2="46" y2="14" stroke="#fff" stroke-width="6"/><line x1="24" y1="0" x2="24" y2="28" stroke="#fff" stroke-width="6"/><line x1="2" y1="14" x2="46" y2="14" stroke="#c22" stroke-width="2.5"/><line x1="24" y1="0" x2="24" y2="28" stroke="#c22" stroke-width="2.5"/></g>
+  ${mv(`<g transform="translate(0,190)">${horse(-10,0,1,'#6b4a2a',false)}${horse(-70,0,1,'#7a5a3a',false)}<line x1="30" y1="-14" x2="85" y2="-14" stroke="#333" stroke-width="3"/>${wheel(105,-12,14)}<rect x="85" y="-32" width="40" height="8" fill="#555"/><line x1="105" y1="-26" x2="150" y2="-40" stroke="#333" stroke-width="6"/></g>`,22,-6,'mvs')}
+  ${[0,1,2,3].map(i=>mv(person(0,192,{gun:true,c:'#8a7a4a',h:'#6b5b32',s:1.15}),12,-i*1.8-1)).join('')}
+  ${person(540,190,{still:true,c:'#a33',h:'#222',s:1.1})}${person(575,190,{still:true,c:'#365',h:'#ddd',s:1})}${person(610,190,{still:true,c:'#357',h:'#333',s:1.1})}
+  <text x="210" y="102" font-size="12" fill="#2b2118" font-family="sans-serif">Church Square, 5 June 1900</text>`,
+ 'British column crossing Church Square, Pretoria')
+};
+
+/* ---------- map data ---------- */
+const W=970,H=860,P=(lo,la)=>[20+(lo-16.4)*56,20+(-22.0-la)*64];
+const poly=pts=>pts.map(p=>P(...p).map(v=>v.toFixed(1)).join(',')).join(' ');
+const prov={
+ cape:{c:'#ecdcb4',n:'CAPE COLONY',lab:[20.6,-31.8],pts:[[16.45,-28.6],[20.0,-28.4],[20.0,-24.8],[20.6,-25.7],[23.0,-25.3],[25.5,-25.6],[25.4,-26.0],[25.0,-27.0],[25.2,-27.9],[24.3,-28.7],[23.7,-29.05],[24.1,-29.6],[25.1,-30.5],[25.8,-30.5],[26.7,-30.7],[27.3,-30.3],[27.8,-30.6],[28.6,-30.2],[29.3,-30.5],[30.2,-31.05],[29.0,-32.1],[27.9,-33.0],[26.0,-33.7],[25.6,-34.0],[24.0,-34.2],[22.0,-34.0],[20.0,-34.8],[18.5,-34.1],[18.0,-32.5],[17.9,-31.0]]},
+ ofs:{c:'#f2d2ac',n:'ORANGE FREE STATE',lab:[25.7,-27.95],pts:[[29.1,-27.4],[28.6,-27.05],[27.9,-26.65],[27.5,-26.9],[26.8,-27.0],[25.6,-27.65],[25.2,-27.9],[24.3,-28.7],[23.7,-29.05],[24.1,-29.6],[25.1,-30.5],[25.8,-30.5],[26.7,-30.7],[27.3,-30.3],[27.0,-29.6],[27.7,-28.6],[28.6,-28.6],[29.0,-28.3]]},
+ natal:{c:'#cfe3c2',n:'NATAL',lab:[30.9,-29.3],pts:[[29.9,-27.4],[29.1,-27.5],[29.0,-28.3],[28.6,-28.6],[29.4,-29.3],[29.0,-29.9],[29.3,-30.5],[30.2,-31.05],[31.0,-29.9],[32.3,-28.7],[32.8,-27.5],[32.9,-26.85],[32.0,-26.85],[31.4,-27.3],[30.9,-27.2]]},
+ tvl:{c:'#d8d2ee',n:'TRANSVAAL (ZAR)',lab:[27.9,-23.9],pts:[[25.5,-25.6],[26.5,-24.6],[27.0,-23.6],[28.2,-22.6],[29.4,-22.15],[31.3,-22.4],[32.0,-24.0],[32.0,-25.9],[31.4,-25.7],[30.8,-26.4],[30.9,-27.15],[29.9,-27.4],[29.1,-27.4],[28.6,-27.05],[27.9,-26.65],[27.5,-26.9],[26.8,-27.0],[25.6,-27.65],[25.2,-27.9],[25.0,-27.0],[25.4,-26.0]]}
+};
+const lesotho=[[27.0,-29.6],[27.7,-28.6],[28.6,-28.6],[29.4,-29.3],[29.0,-30.2],[28.0,-30.6],[27.3,-30.3]];
+const eswatini=[[30.8,-26.4],[31.4,-25.7],[32.0,-25.9],[32.0,-26.85],[31.4,-27.3],[30.9,-27.15]];
+
+const steps=[
+{id:'a1',n:1,title:'Area 1 – Witwatersrand, Langlaagte & the Jameson Raid',place:'Langlaagte / Johannesburg, Transvaal',ll:[-26.2,27.99],pin:[27.99,-26.2],lab:[18,28],scene:'gold',scene2:'raid',html:()=>`
+<h3>1. Witwatersrand / Langlaagte</h3>
+${maps(-26.2,27.99,'Langlaagte')}
+<ul>
+<li>The discovery of gold on the Witwatersrand in 1886 attracted thousands of prospectors and workers from South Africa and overseas, transforming the Transvaal into an important mining and financial centre (South African History Online [SAHO], 2011).</li>
+<li>The mineral revolution shifted the economic balance of power in southern Africa. The Transvaal became increasingly important because of its gold wealth, large mining companies and international investment (SAHO, 2011).</li>
+<li>Britain was interested in the Transvaal's gold because it was important to international finance and Britain's position in the global economy (SAHO, 2011).</li>
+<li>Competition over the goldfields increased tensions between Britain and the independent South African Republic (ZAR), contributing to the causes of the South African War (SAHO, 2011).</li></ul>
+<div class="gallery">
+${fig('https://upload.wikimedia.org/wikipedia/commons/d/df/Johannesburg_Gold_Fields_1902.jpg','Johannesburg Gold Fields, 1902. Wikimedia Commons.','https://commons.wikimedia.org/wiki/File:Johannesburg_Gold_Fields_1902.jpg')}
+${fig('https://www.americangeosciences.org/static/earth/benchmarks-october-11-1899-second-boer-war-begins-fueled-discovery-gold/LANGLAAGTE_BritishLIbrary.jpg','Langlaagte. Image: British Library, via American Geosciences Institute.','https://www.americangeosciences.org/earth/benchmarks-october-11-1899-second-boer-war-begins-fueled-discovery-gold')}
+${fig('https://lh3.googleusercontent.com/blogger_img_proxy/AEn0k_v4VUNMq4HIuIS52gJCj6SBmNdHS6wnEkJRAKevASNos1xLqSK5zbspYRuUW56DpO5i6-yytQ-jYbIiUwaFWjjSb93mHCMsoHKffOGqnUHY30fQF02rX6TE-9vWepDlgj9NXYisJGvjEzRSJA=s0-d','Witwatersrand mining scene (blog image – confirm original source before citing).')}
+</div>
+<div class="cards">${card('https://www.worldhistory.org/image/21810/witwatersrand-gold/','Witwatersrand Gold (image)','World History Encyclopedia')}${card('https://sahistory.org.za/article/second-anglo-boer-war-1899-1902','SAHO: Second Anglo-Boer War','Background reading')}</div>
+${yt('Kob5Z8v_Y3Y',12,'Witwatersrand gold and the road to war')}
+<h3>The Uitlanders and their demands</h3>
+<ul>
+<li>The Uitlanders were foreign immigrants who came to the Transvaal, particularly Johannesburg, to seek employment and profit from the gold-mining industry (SAHO, 2011).</li>
+<li>Some Uitlanders objected to the Transvaal government's taxation policies and its control over essential mining supplies, including dynamite. These restrictions and transport costs created tension between mining interests and the Boer government (SAHO, 2011).</li>
+<li>Many Uitlanders demanded greater political representation because they contributed to the economy but faced restrictions on their voting rights. Under the franchise rules, voting for the First Volksraad required a lengthy period of residence (SAHO, 2011).</li>
+<li>Cecil John Rhodes, the Prime Minister of the Cape Colony, supported British imperial expansion and sought to overthrow the Transvaal government. The Uitlanders' grievances provided an opportunity to support an uprising against the Boer government (SAHO, 2011).</li></ul>
+<div class="act"><h3>Activity</h3><ol>
+<li>Explain TWO ways in which the discovery of gold changed the Transvaal. <b>(2)</b></li>
+<li>What does the historical photograph reveal about mining activities in the early twentieth century? <b>(1)</b></li>
+<li>Who were the Uitlanders? <b>(1)</b></li>
+<li>Why did the Uitlanders' demands create tension with the Boer government of the Zuid-Afrikaansche Republiek (ZAR)? <b>(1)</b></li>
+<li>Why was Britain interested in controlling the mineral wealth of the Transvaal? <b>(2)</b></li></ol></div>
+<hr>
+<h3>2. The Jameson Raid</h3>
+<div id="raidscene"></div>
+<ul>
+<li>Cecil John Rhodes supported plans for an Uitlander uprising in Johannesburg, which was intended to coincide with an invasion of the Transvaal from Bechuanaland (present-day Botswana) led by Dr Leander Starr Jameson (SAHO, 2011).</li>
+<li>Jameson and his armed force crossed into the Transvaal on 29 December 1895, even though the planned uprising had not materialised as expected (SAHO, 2011).</li>
+<li>Communication problems meant that the raid was not stopped in time. Jameson's force was defeated and surrendered near Doornkop on 2 January 1896 (SAHO, 2011).</li>
+<li>Rhodes was forced to resign as Prime Minister of the Cape Colony following the raid's failure (SAHO, 2011).</li>
+<li>The raid increased mistrust between the Boer republics and Britain. The Orange Free State strengthened its cooperation with the Transvaal, while the Boer government became more suspicious of Uitlanders (SAHO, 2011).</li>
+<li>These tensions contributed to the wider political conflict that eventually led to the South African War of 1899–1902 (SAHO, 2011).</li></ul>
+<div class="gallery">
+${fig('https://www.zimfieldguide.com/api/images/Images/jam6.PNG','Jameson Raid image 1. Zimbabwe Field Guide.')}
+${fig('https://www.zimfieldguide.com/api/images/Images/jam9.PNG','Jameson Raid image 2. Zimbabwe Field Guide.')}
+${fig('https://www.zimfieldguide.com/api/images/Images/jam13.PNG','Jameson Raid image 3. Zimbabwe Field Guide.')}
+${fig('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdNu3wrNn3-K_reptYXN0FWiSWV_gWbQzAf8Cs1K3uMQ5T5TvXTWb4zPv_&s=10','Cartoon: British imperial ambitions (find and cite the original publication).')}
+</div>
+${yt('PK8AW2H7IGE',109,'The Jameson Raid')}
+<div class="act"><h3>Cartoon activity</h3><ol>
+<li>Identify the British imperialist represented in the cartoon. <b>(1)</b></li>
+<li>What does the cartoon suggest about British imperial ambitions in southern Africa? <b>(1)</b></li>
+<li>Explain how Cecil John Rhodes's imperial ambitions were connected to the Jameson Raid. <b>(2)</b></li></ol></div>
+<p class="meta">Sources: ${L('https://sahistory.org.za/ref/A-0016635','SAHO (2011) Second Anglo-Boer War')} · ${L('https://sahistory.org.za/article/jameson-raid','SAHO (2011) The Jameson Raid')}</p>`},
+
+{id:'a2',n:2,title:'Area 2 – The Old Presidency, Bloemfontein, 1900',place:'Old Presidency, Bloemfontein, Orange Free State',ll:[-29.1186,26.2166],pin:[26.2166,-29.1186],lab:[18,-26],scene:'pres',html:()=>`
+<p><b>Historical focus:</b> The British occupation of Bloemfontein on 13 March 1900 and the use of the Old Presidency as British military headquarters.</p>
+${maps(-29.1186,26.2166,'Old Presidency')}
+<div class="note"><b>An important historical distinction:</b> British troops first entered Bloemfontein on 13 March 1900; they did not first arrive at the Old Presidency itself. After capturing the town, Field Marshal Lord Roberts and British officers used the Old Presidency as their headquarters. The tour therefore focuses on this one site to explore both the arrival of British forces in Bloemfontein and the building's change from a presidential residence to a military headquarters.</div>
+<h3>1. Historical site: The Old Presidency</h3>
+<p>The Old Presidency, also known as the Presidency or Ou Presidensie, is a historic building on President Brand Street in central Bloemfontein. Its history began before the building became the official residence of the Orange Free State presidents.</p>
+<p>During the 1820s, a trekboer family named Brits settled on the site and built a small, thatched dwelling. In 1846, Major Henry Douglas Warden, the British resident north of the Orange River, purchased the property. A modest farm building made from sun-dried bricks subsequently stood there. After the British government abandoned the Orange River Sovereignty in 1854, the Orange Free State Republic took over the residence.</p>
+<p>The present, more substantial Presidency building was constructed in the 1880s. Its foundation stone was laid on 22 May 1885, and construction was completed in 1886. It served as the official residence of presidents of the Orange Free State, including Johannes Henricus Brand, Francis William Reitz and Marthinus Theunis Steyn. The building represented the political authority and independence of the republic before the British occupation.</p>
+<p>On 13 March 1900, British forces occupied Bloemfontein during the South African War (1899–1902). Lord Roberts and his officers used the Old Presidency as their military headquarters. It became known as Government House during the subsequent period of British administration. The building's change of use provides physical evidence of a wider political change: the capital of the Orange Free State Republic came under British military control.</p>
+<p>The site later served other purposes, including educational and government-related uses. It was converted into a museum in 1984 and opened to the public. Today, it is known as the Old Presidency Museum and is used for heritage and cultural activities.</p>
+<h3>2. Pictures: British arrival in 1900 and the site today</h3>
+<p>Open each source, then choose the actual photographs you intend to use.</p>
+<div class="cards">
+${card('https://sahistory.org.za/place/old-presidency-museum-bloemfontein','Figure 1 – The Old Presidency today','South African History Online')}
+${card('https://www.nationalgalleries.org/art-and-artists/76259/british-troops-entering-bloemfontein','Figure 2 – British troops entering Bloemfontein, 13 March 1900','National Galleries of Scotland. Shows the arrival, but not the military reasons or how every resident felt.')}
+${card('https://sahistory.org.za/place/old-presidency-museum-bloemfontein','Figure 3 – The Presidency in the historical period','SAHO. Check caption and date before labelling it as 1900.')}
+${card('https://www.sacr.fs.gov.za/?page_id=3501','Figure 4 – The Old Presidency today (official)','Free State Dept of Sport, Arts, Culture and Recreation')}</div>
+<p class="note"><b>Image-use note:</b> Keep each image's original title, date, collection/photographer and source link. Do not label a photograph showing the Old Presidency in 1900 unless the source confirms that identification.</p>
+<h3>3. Why did the British occupy Bloemfontein?</h3>
+<p>The occupation occurred during the South African War, fought from 1899 to 1902 between the British Empire and the Boer republics, including the Orange Free State and the South African Republic (Transvaal). The British advance towards Bloemfontein followed major fighting at Paardeberg, Poplar Grove and Driefontein. Lord Roberts's army occupied Bloemfontein on 13 March 1900 without further resistance in the town.</p>
+<ul><li><b>Military strategy:</b> Capturing the capital of the Orange Free State was an important step in the British campaign against the Boer republics.</li>
+<li><b>Political control:</b> Occupying the capital placed the Orange Free State's central political institutions under British control.</li>
+<li><b>A base for further operations:</b> Bloemfontein became a place where British forces could rest, organize supplies and prepare to advance towards Pretoria. The army remained there for several weeks, partly because of troop exhaustion and a typhoid epidemic.</li></ul>
+<p>The Old Presidency is especially useful for teaching this history because the change in the building's function can be linked to the change in political power. It was first associated with the presidents of the Orange Free State, but after the occupation it was used by the British military leadership.</p>
+<p><b>Historical enquiry question:</b> How did the British occupation of Bloemfontein change the meaning and use of the Old Presidency in 1900?</p>
+<h3>Archival film: Entry of the Scots' Guards into Bloemfontein</h3>
+<p>British Film Institute (BFI) Replay · approx. 1 minute · silent archival film. It shows the Scots Guards entering Bloemfontein in March 1900, i.e. the entry into the town rather than the Old Presidency itself.</p>
+<p>${L('https://player.bfi.org.uk/','Open BFI Player and search "Scots Guards Bloemfontein"')}</p>
+<div class="act"><h3>5. Learner tasks before the tour</h3>
+<p><b>Task 1 – Context:</b> (1) What was the Orange Free State before the British occupation? (2) What happened in Bloemfontein on 13 March 1900? (3) Who was Lord Roberts, and what role did he play? (4) Why might the British have wanted to control Bloemfontein?</p>
+<p><b>Task 2 – Predict:</b> Study a current picture of the Old Presidency. How might the building have been used after the occupation? What evidence would show whether your prediction is correct?</p>
+<p><b>Task 3 – Timeline:</b> Arrange in order: British forces occupy Bloemfontein · The Brits family settles on the site · The Old Presidency is completed · Major Warden purchases the property.</p>
+<p><b>Task 4 – Source analysis:</b> Before the film, look for what is visible, what it suggests about the arrival, and what it does not show about causes or consequences.</p></div>
+<div class="act"><h3>6. Learner tasks during the tour</h3><ol>
+<li><b>Observe:</b> Identify three visible features of the Old Presidency in the current image.</li>
+<li><b>Compare:</b> Compare it with historical images: one feature that has remained and one possible change (only claims the images support).</li>
+<li><b>Use evidence:</b> Record two details observed directly in the BFI film.</li>
+<li><b>Question the source:</b> Who filmed the arrival of the Scots Guards? What does the footage show well, and what is missing?</li>
+<li><b>Explain change:</b> How did the use of the Old Presidency change from a presidential residence to a British military headquarters?</li>
+<li><b>Significance:</b> Why is the Old Presidency important for understanding the British occupation of Bloemfontein?</li></ol></div>`},
+
+{id:'a3',n:3,title:'Area 3 – Battle of Paardeberg (and locating Spion Kop)',place:'Paardeberg, Modder River, Orange Free State',ll:[-29.1,25.1],pin:[25.1,-29.1],lab:[-150,34],scene:'paard',html:()=>`
+${maps(-29.1,25.1,'Paardeberg')}
+<p>From 18 to 27 February 1900 the Battle of Paardeberg took place during the Second Anglo-Boer War (1899–1902). The battle was between the British Empire and the Boer republics, the Transvaal and the Orange Free State. General Piet Cronjé and his Boer troops were withdrawing after the British moved forward to Kimberley. British soldiers stopped Cronjé's army near the Modder River in the Orange Free State. Cronjé decided to defend his position rather than abandon his wagons and supplies. The British soldiers surrounded his forces and attacked them. After days of fighting and bombardment, Cronjé surrendered to Lord Roberts on 27 February 1900, and many Boer soldiers were taken prisoner. The battle was a significant victory for the British Empire and demonstrated how the local terrain influenced military operations (Smit & Janse van Rensburg, 2014).</p>
+<p class="meta">Map views for this area: ${L('https://sl.bing.net/dYsSa43R8mq','Map/image 1')} · ${L('https://sl.bing.net/kcpxhhM99a0','Map/image 2')} · ${L('https://sl.bing.net/k5Fetjjj7Yq','Map/image 3')}</p>
+${yt('RgyK7O3o0VI',0,'Battle of Paardeberg')}
+<div class="act"><h3>Activity 3 – 5 minutes (answer in your workbooks)</h3><ol>
+<li>In which year did the Battle of Paardeberg take place?</li>
+<li>Name the Boer general who surrendered after bombardment.</li>
+<li>State the results of the British victory.</li></ol></div>
+<hr>
+<h3>Location of Spion Kop</h3>
+<p>First notice that this is not a flat, open battlefield. There are hills, slopes, ridges and valleys. These geographical features were important because soldiers had to move across uneven ground while trying to capture and defend positions.</p>
+<p>The hill's elevated position made it valuable for both armies. The British wanted to capture the high ground to weaken the Boer defensive line and help their forces advance towards Ladysmith. The Boers wanted to prevent the British from breaking through their positions.</p>
+${maps(-28.65,29.5,'Spion Kop')}
+<p class="meta">Source: Walker, M. (2019, November 5). ${L('https://www.nytimes.com/athletic/1349453/2019/11/05/how-the-kop-became-the-kop/','How the Kop became the Kop')}. The Athletic.</p>
+<p class="meta">Reference: Smit &amp; Janse van Rensburg (2014), ${L('https://hdl.handle.net/10520/EJC161516','Scientia Militaria 42(2)')}</p>`},
+
+{id:'a4',n:4,title:'Area 4 – The Battle of Spion Kop, 23–24 January 1900',place:'Spion Kop, near Ladysmith, Natal',ll:[-28.65,29.5],pin:[29.5,-28.65],lab:[-10,-24],scene:'spion',html:()=>`
+<div class="cards">${card('https://www.britishbattles.com/great-boer-war/battle-of-spion-kop/','The battle at Spion Kop','BritishBattles.com (n.d.)')}</div>
+<h3>The night advance</h3>
+<p>This shows British troops heading to Spion Kop during the night when it was misty on 23 January 1900. They managed to occupy the summit in the early hours of the morning, but the British did not fully understand how exposed they were: higher ground nearby allowed Boer forces to fire onto the summit. The British soldiers also had limited protection because the rocky ground made it difficult to dig deep trenches.</p>
+<p><b>Key point:</b> capturing a position and holding a position are two different things. The British had reached the summit, but they still needed to defend their troops against attack from surrounding positions.</p>
+<h3>British soldiers in a shallow trench</h3>
+<p>The historical photograph shows British soldiers who died in a shallow trench following the fighting at Spion Kop. The shallow trench illustrates the limited protection available to soldiers in the rocky terrain. The photograph is evidence of the cost of the battle and reminds us that the conflict resulted in a significant loss of life.</p>
+<div class="cards">${card('https://samilhistory.com/tag/battle-of-spionkop/','Battle of Spionkop – The Observation Post','Photograph: shallow trench (open source page)')}</div>
+<h3>A British officer's account</h3>
+<p>The letter was written by Lieutenant Colonel Alexander Thorneycroft on 24 January and identifies the problems faced by British troops at Spion Kop, such as a lack of water and ammunition and heavy casualties. As a primary source it helps learners and historians understand the conditions experienced by British soldiers and the challenges of defending the summit.</p>
+<div class="cards">${card('https://cdn.nationalarchives.gov.uk/documents/education/the-south-african-war.pdf','The South African War (PDF)','The National Archives – educational resource')}</div>
+<h3>The outcome of the battle</h3>
+<p>Spion Kop took place on 23–24 January 1900. The British held the hill but could not withstand Boer fire from the higher ground around it, and they were exposed. The British withdrew, and the Boers regained control of the hill. The battle demonstrates that capturing high ground was not enough: an army also needed to maintain a secure and defensible position.</p>
+<div class="cards">${card('https://warfarehistorynetwork.com/article/an-acre-of-massacre-the-second-boer-wars-battle-of-spion-kop/','An Acre of Massacre','Voelkner (2005), Warfare History Network')}</div>
+<div class="act"><h3>Learner Activity</h3><p>Complete the online form:</p>
+<a class="btn" target="_blank" rel="noopener" href="https://docs.google.com/forms/d/e/1FAIpQLSckrSVCHQ9sxEDb74JyA3z8TNtllWGWpF0XA_fxrKJJ-i04Og/viewform?usp=publish-editor">📝 Open the Spion Kop activity (Google Form)</a></div>`},
+
+{id:'a5',n:5,title:'Area 5 – Pretoria, 5 June 1900',place:'Church Square, Pretoria, Transvaal',ll:[-25.7463,28.1881],pin:[28.1881,-25.7463],lab:[16,-20],scene:'pret',html:()=>`
+<p><b>Guiding question:</b> What did the British occupation of Pretoria on 5 June 1900 mean, and why did it not bring the South African War to an end?</p>
+${maps(-25.7463,28.1881,'Church Square')}
+<div class="note"><b>CAPS clarification:</b> The national CAPS History document places Topic 6, The South African War and Union, in Grade 10, Term 4. The Pretoria capture is a subtopic within it. Check your school's current Annual Teaching Plan.</div>
+<h3>Learning outcomes</h3>
+<ul><li>Locate Pretoria and Church Square and explain why Pretoria mattered as the Transvaal capital.</li><li>Sequence the British advance from Bloemfontein to Johannesburg and Pretoria.</li><li>Use a contemporary photograph and newspaper report as historical sources.</li><li>Distinguish between the capture of a capital and the end of a war.</li><li>Explain that Boer forces continued with guerrilla warfare until 1902.</li></ul>
+<p>Keep the account balanced: the war involved British imperial forces, the Transvaal and Orange Free State, and Black South Africans whose experiences are often underrepresented.</p>
+<h3>The six stops</h3>
+<table><tr><th>Stop</th><th>Visual / place</th><th>Content</th><th>Learner task</th></tr>
+<tr><td>1. Orientation</td><td>Map: Bloemfontein, Johannesburg, Pretoria</td><td>War began October 1899. Pretoria was capital of the South African Republic.</td><td>Identify the three places in the order the British reached them.</td></tr>
+<tr><td>2. The advance</td><td>Route map</td><td>Bloemfontein occupied 13 March 1900; Johannesburg entered 31 May; then Pretoria.</td><td>Order: 13 March, 31 May, 5 June 1900.</td></tr>
+<tr><td>3. Approach</td><td>Photograph of British troops outside Pretoria</td><td>Boer leaders had to decide whether to defend the town or withdraw.</td><td>Give two things a commander would consider before defending a capital.</td></tr>
+<tr><td>4. Church Square</td><td>British artillery crossing the square, c. 1900</td><td>Pretoria occupied 5 June 1900. A photograph shows what the photographer chose to record.</td><td>List two things visible and two the image cannot tell us.</td></tr>
+<tr><td>5. The Raadsaal</td><td>Ou Raadsaal, Church Square</td><td>Linked to the Transvaal government; occupation symbolised a change in control but not the end of the war.</td><td>Why did control of government buildings matter?</td></tr>
+<tr><td>6. What next?</td><td>Timeline to Vereeniging, 31 May 1902</td><td>Boer forces continued with guerrilla tactics; the war ended almost two years later.</td><td>Why is "Pretoria fell, so the war ended" inaccurate?</td></tr></table>
+<h3>Primary sources</h3>
+<div class="cards">
+${card('https://www.awm.gov.au/collection/C62539','A. British artillery crossing the public square, c. 1900','Australian War Memorial, P00295.363')}
+${card('https://collection.nam.ac.uk/detail.php?acc=1998-01-135-56','B. Lord Roberts and staff, 5 June 1900','National Army Museum')}
+${card('https://www.nationalarchives.gov.za/node/2166383','B. Raising the Union Jack at Pretoria','National Archives and Records Service of South Africa')}
+${card('https://paperspast.natlib.govt.nz/newspapers/THS19000607.2.12.4','C. "The Occupation of Pretoria"','Thames Star, 7 June 1900. Relays the British commander\'s version.')}</div>
+<p><b>Analyse each source:</b> Who created it, and when? What does it directly show or say? Why was it created? Whose perspective is prominent, and whose is missing? What other source would help check it?</p>
+<h3>Secondary sources</h3>
+<div class="cards">
+${card('https://upjournals.up.ac.za/index.php/historia/article/view/3432','Behrens: The occupation of Pretoria on 5th June, 1900','Historia')}
+${card('https://sahistory.org.za/article/south-african-war-1899-1902','SAHO: The South African War 1899–1902','Overview and timeline')}
+${card('https://sahistory.org.za/article/pretoria-founding-city','SAHO: Pretoria – the founding of the city','City background')}
+${card('https://sahistory.org.za/place/church-square-pretoria','SAHO: Church Square, Pretoria','Place history')}
+${card('https://sajournalofarthistory.org.za/wp-content/uploads/2022/02/SAJAH_36_1.pdf','Van der Vyver: Church Square (1840–1954)','South African Journal of Art History')}</div>
+<p class="note">Dates: British troops entered Johannesburg on 31 May and occupation is commonly dated 1 June; Pretoria was occupied on 5 June.</p>
+<p>Video searches (preview before use): ${L('https://www.youtube.com/results?search_query=Pretoria+occupied+5+June+1900+Anglo-Boer+War','Pretoria occupied 5 June 1900')} · ${L('https://www.youtube.com/results?search_query=South+African+War+1899-1902+documentary','South African War documentary')}</p>
+<div class="act"><h3>Activities and assessment</h3><ol>
+<li><b>Map and timeline (5):</b> Label Bloemfontein (13 March 1900), Johannesburg (31 May / 1 June), Pretoria (5 June 1900) and Vereeniging (31 May 1902); 1 mark for each correct sequence/location and 1 for the final explanation.</li>
+<li><b>Photograph detective (6):</b> two observations (2), one inference (1), one limitation (1), one question for the photographer or archive (1), one additional source needed (1).</li>
+<li><b>Compare accounts (6):</b> Compare the 1900 newspaper report with Behrens's article: one agreement (2), one difference in emphasis (2), why they differ (2).</li>
+<li><b>Exit ticket (3):</b> In 3–4 sentences: "Why was the capture of Pretoria important, and why did it not end the war?"</li></ol>
+<p>Word bank: capital, occupation, surrender, source, guerrilla warfare.</p></div>`}
+];
+
+const REFS=[
+['South African History Online. (2011, March 21). Second Anglo-Boer War - 1899 - 1902.','https://sahistory.org.za/ref/A-0016635'],
+['South African History Online. (2011, March 21). The Jameson Raid.','https://sahistory.org.za/article/jameson-raid'],
+['South African History Online. (2011, July 14). The Old Presidency Museum, Bloemfontein.','https://sahistory.org.za/place/old-presidency-museum-bloemfontein'],
+['Free State Department of Sport, Arts, Culture and Recreation. (n.d.). Old Presidency Museum.','https://www.sacr.fs.gov.za/?page_id=3501'],
+['Anglo-Boer War Museum. (n.d.). The British soldiers’ Bloemfontein: Impressions and experiences during the time of the British occupation, 13 March–3 May 1900.','https://www.wmbr.org.za/publications/the-british-soldiers-bloemfontein-impressions-and-experiences-during-the-time-of-the-british-occupation-13-march-3-may-1900/'],
+['National Army Museum. (n.d.). Frederick Roberts: Bobs.','https://www.nam.ac.uk/explore/frederick-roberts-bobs'],
+['National Galleries of Scotland. (n.d.). British troops entering Bloemfontein.','https://www.nationalgalleries.org/art-and-artists/76259/british-troops-entering-bloemfontein'],
+['Smit, H. A. P., & Janse van Rensburg, H. S. (2014). Success and failure along the Modder River during the Anglo-Boer War: the influence of terrain. Scientia Militaria: South African Journal of Military Studies, 42(2), 117–142.','https://hdl.handle.net/10520/EJC161516'],
+['Walker, M. (2019, November 5). How the Kop became the Kop. The Athletic.','https://www.nytimes.com/athletic/1349453/2019/11/05/how-the-kop-became-the-kop/'],
+['BritishBattles.com. (n.d.). Battle of Spion Kop.','https://www.britishbattles.com/great-boer-war/battle-of-spion-kop/'],
+['Battle of Spionkop. (n.d.). The Observation Post.','https://samilhistory.com/tag/battle-of-spionkop/'],
+['The National Archives. (n.d.). The South African War [Educational resource].','https://cdn.nationalarchives.gov.uk/documents/education/the-south-african-war.pdf'],
+['Voelkner, H. T. (2005, October). An acre of massacre: The Second Boer War’s Battle of Spion Kop. Warfare History Network.','https://warfarehistorynetwork.com/article/an-acre-of-massacre-the-second-boer-wars-battle-of-spion-kop/'],
+['Australian War Memorial. (n.d.). Pretoria, Transvaal, c. 1900: A British artillery battery crosses the public square at the head of Church Street (P00295.363).','https://www.awm.gov.au/collection/C62539'],
+['Behrens, H. P. H. (2021). The occupation of Pretoria on 5th June, 1900. Historia, 8(3).','https://upjournals.up.ac.za/index.php/historia/article/view/3432'],
+['Department of Basic Education. (2011). Curriculum and Assessment Policy Statement (CAPS): History Grades 10–12.','https://www.education.gov.za/Portals/0/CD/National%20Curriculum%20Statements%20and%20Vocational/CAPS%20FET%20%20HISTORY%20GR%2010-12%20%20WeB.pdf?ver=2015-01-27-154219-397'],
+['National Army Museum. (n.d.). Lord Roberts and staff cheering the Queen—raising the Union Jack on occupation of Pretoria, 5 June 1900.','https://collection.nam.ac.uk/detail.php?acc=1998-01-135-56'],
+['National Archives and Records Service of South Africa. (n.d.). Anglo-Boer War: Lord Roberts and staff cheering the Queen—raising the Union Jack on occupation of Pretoria.','https://www.nationalarchives.gov.za/node/2166383'],
+['South African History Online. (n.d.). Pretoria: The founding of the city.','https://sahistory.org.za/article/pretoria-founding-city'],
+['South African History Online. (n.d.). The South African War 1899–1902.','https://sahistory.org.za/article/south-african-war-1899-1902'],
+['South African History Online. (n.d.). Church Square, Pretoria.','https://sahistory.org.za/place/church-square-pretoria'],
+['Thames Star. (1900, June 7). The occupation of Pretoria. Papers Past.','https://paperspast.natlib.govt.nz/newspapers/THS19000607.2.12.4'],
+['Van der Vyver, Y. (2021). Creation and re-creation of Pretoria’s Church Square (1840–1954). South African Journal of Art History, 36(1), 147–182.','https://sajournalofarthistory.org.za/wp-content/uploads/2022/02/SAJAH_36_1.pdf']
+];
+const MEDIA=[
+['Johannesburg Gold Fields, 1902 (photograph). Wikimedia Commons.','https://commons.wikimedia.org/wiki/File:Johannesburg_Gold_Fields_1902.jpg'],
+['Langlaagte (image). British Library, via American Geosciences Institute.','https://www.americangeosciences.org/earth/benchmarks-october-11-1899-second-boer-war-begins-fueled-discovery-gold'],
+['Witwatersrand Gold (image). World History Encyclopedia.','https://www.worldhistory.org/image/21810/witwatersrand-gold/'],
+['Jameson Raid images. Zimbabwe Field Guide.','https://www.zimfieldguide.com'],
+['Video – Witwatersrand and the road to war (YouTube).','https://youtu.be/Kob5Z8v_Y3Y?t=12'],
+['Video – The Jameson Raid (YouTube).','https://youtu.be/PK8AW2H7IGE?t=109'],
+['Video – Battle of Paardeberg (YouTube).','https://youtu.be/RgyK7O3o0VI'],
+['Entry of the Scots’ Guards into Bloemfontein (film, c. 1900). BFI Replay.','https://player.bfi.org.uk/'],
+['Spion Kop learner activity (Google Form).','https://docs.google.com/forms/d/e/1FAIpQLSckrSVCHQ9sxEDb74JyA3z8TNtllWGWpF0XA_fxrKJJ-i04Og/viewform?usp=publish-editor']
+];
+
+/* ---------- views ---------- */
+const app=document.getElementById('app'),chips=document.getElementById('chips');
+function go(id){location.hash=id}
+function chipBar(cur){
+  chips.innerHTML=[['map','🗺 Map']].concat(steps.map(s=>[s.id,'Area '+s.n])).concat([['refs','References']])
+   .map(([id,t])=>`<button class="${id===cur?'on':''}" onclick="go('${id}')">${t}</button>`).join('');
+}
+function mapView(){
+  const route='M'+steps.map(s=>P(...s.pin).join(' ')).join(' L');
+  const pins=steps.map(s=>{const [x,y]=P(...s.pin);const [dx,dy]=s.lab;
+   const short={a1:'Langlaagte / Witwatersrand',a2:'Old Presidency, Bloemfontein',a3:'Paardeberg',a4:'Spion Kop',a5:'Pretoria'}[s.id];
+   const tx=dx<0?-dx*-1:dx; const anchor=dx<0?'end':'start';
+   return `<g class="pin" onclick="go('${s.id}')" tabindex="0" onkeydown="if(event.key==='Enter')go('${s.id}')"><title>Area ${s.n}: ${short}</title><circle class="pulse" cx="${x}" cy="${y}" r="14"/><circle cx="${x}" cy="${y}" r="15"/><text class="n" x="${x}" y="${y}">${s.n}</text><text class="l" x="${x+tx}" y="${y+dy}" text-anchor="${anchor}">${short}</text></g>`}).join('');
+  const labels=Object.values(prov).map(p=>{const [x,y]=P(...p.lab);return `<text x="${x}" y="${y}" text-anchor="middle" font-size="19" font-weight="bold" fill="#5a4a3a" opacity=".75" font-family="Georgia" letter-spacing="2">${p.n}</text>`}).join('');
+  const [lx,ly]=P(27.8,-29.55),[ex,ey]=P(31.4,-26.5);
+  const sa=Object.values(prov).map(p=>`<polygon class="prov" fill="${p.c}" points="${poly(p.pts)}"/>`).join('');
+  app.innerHTML=`<div class="maprow"><div class="mapbox"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Map of South Africa showing the four historical provinces with five tour locations">
+   <rect width="${W}" height="${H}" fill="#cfe6f2"/><text x="60" y="560" font-size="20" fill="#6a95ad" font-style="italic" font-family="Georgia">Atlantic Ocean</text><text x="760" y="780" font-size="20" fill="#6a95ad" font-style="italic" font-family="Georgia">Indian Ocean</text>
+   ${sa}<polygon fill="#e8e8e8" stroke="#777" points="${poly(lesotho)}"/><polygon fill="#e8e8e8" stroke="#777" points="${poly(eswatini)}"/>
+   <text x="${lx}" y="${ly}" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif">Lesotho</text><text x="${ex}" y="${ey}" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">Eswatini</text>
+   ${labels}
+   <path d="${route}" fill="none" stroke="#8c2f1b" stroke-width="3" stroke-dasharray="9 7" opacity=".8"/>
+   <g><g transform="scale(1.6)"><g id="mapwalker">${person(0,0,{gun:true,c:'#8a7a4a',h:'#6b5b32'})}</g></g><animateMotion dur="26s" repeatCount="indefinite" path="${route}" rotate="0"/></g>
+   ${pins}</svg></div>
+  <aside class="side"><h2>Start the tour</h2><p>The map shows the <b>four historical provinces</b> in place during the South African War: the Cape Colony, Natal, the Orange Free State and the Transvaal (ZAR). Follow the soldier along the dotted route, or click any numbered pin.</p>
+  <ol>${steps.map(s=>`<li onclick="go('${s.id}')"><b>${s.title.replace(/^Area \d – /,'')}</b><br><small>${s.place}</small></li>`).join('')}</ol>
+  <button class="btn" onclick="go('a1')">▶ Begin at Area 1</button></aside></div>`;
+}
+function stepView(i){
+  const s=steps[i],prev=steps[i-1],next=steps[i+1];
+  app.innerHTML=`<div class="panel"><h2>${s.title}</h2><p class="meta">📍 ${s.place} · coordinates ${s.ll[0].toFixed(3)}, ${s.ll[1].toFixed(3)}</p>${scenes[s.scene]()}${s.html()}
+  <div class="navrow"><button class="btn ghost" onclick="go('${prev?prev.id:'map'}')">← ${prev?'Area '+prev.n:'Back to map'}</button><button class="btn ghost" onclick="go('map')">🗺 Map</button><button class="btn" onclick="go('${next?next.id:'refs'}')">${next?'Area '+next.n+' →':'References →'}</button></div></div>`;
+  if(s.scene2){document.getElementById('raidscene').innerHTML=scenes[s.scene2]()}
+  window.scrollTo(0,0);
+}
+function refView(){
+  app.innerHTML=`<div class="panel"><h2>References</h2><p class="meta">APA 7th edition. Click a link to open the source.</p><ol class="refs">${REFS.map(r=>`<li>${r[0]} ${L(r[1])}</li>`).join('')}</ol>
+  <h3>Images, videos and media</h3><ol class="refs">${MEDIA.map(r=>`<li>${r[0]} ${L(r[1])}</li>`).join('')}</ol>
+  <p class="note">The animated figures in this tour are original illustrations, not archival photographs or reconstructions of real events. Always check the reuse conditions of each archival image before publishing.</p>
+  <div class="navrow"><button class="btn ghost" onclick="go('a5')">← Area 5</button><button class="btn" onclick="go('map')">🗺 Back to map</button></div></div>`;
+  window.scrollTo(0,0);
+}
+function route(){
+  const h=(location.hash||'#map').slice(1);
+  chipBar(h);
+  if(h==='refs')return refView();
+  const i=steps.findIndex(s=>s.id===h);
+  if(i>=0)return stepView(i);
+  mapView();
+}
+window.addEventListener('hashchange',route);
+route();
+</script>
+</body>
+</html>
